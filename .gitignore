@@ -1,0 +1,29 @@
+# Virtual Environment
+.venv/
+venv/
+ENV/
+env/
+
+# Python bytecode & cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# Studio Jobs & local generated data
+jobs/
+*.mp4
+*.zip
+scratch*
+scratch_*
+
+# Cloudflare tunnel binary
+cloudflared
+
+# OS & Editor files
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.idea/
+.vscode/

@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manhwa Video Studio — 9:16 Vertical Video Creator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Background decorative ambient mesh -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+  <div class="ambient-glow glow-3"></div>
+
+  <!-- Top Navigation Bar -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="23 7 16 12 23 17 23 7"></polygon>
+            <rect x="1" y="5" width="15" height="14" rx="3" ry="3"></rect>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">
+            <span>MANHWA</span> STUDIO
+            <span class="badge-pro">PRO 9:16</span>
+          </div>
+          <p class="brand-sub">Cinematic Vertical Video Suite for Shorts &amp; Reels</p>
+        </div>
+      </div>
+
+      <!-- Stepper Navigation -->
+      <nav class="stepper" aria-label="Progress">
+        <div class="step on" data-s="1">
+          <span class="step-num">1</span>
+          <span class="step-label">Import</span>
+        </div>
+        <div class="step-sep"></div>
+        <div class="step" data-s="2">
+          <span class="step-num">2</span>
+          <span class="step-label">Select</span>
+        </div>
+        <div class="step-sep"></div>
+        <div class="step" data-s="3">
+          <span class="step-num">3</span>
+          <span class="step-label">Motion</span>
+        </div>
+        <div class="step-sep"></div>
+        <div class="step" data-s="4">
+          <span class="step-num">4</span>
+          <span class="step-label">Export</span>
+        </div>
+      </nav>
+
+      <!-- System Status indicator -->
+      <div class="system-status">
+        <span class="status-dot"></span>
+        <span class="status-text">Engine Online</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="studio-main">
+
+    <!-- STEP 1: IMPORT SOURCE (URL or Local Upload) -->
+    <section class="card studio-card" id="sec-extract">
+      <div class="card-header">
+        <div class="card-title-group">
+          <div class="step-badge">1</div>
+          <div>
+            <h2>Import Manhwa Chapter</h2>
+            <p class="card-desc">Extract high-resolution pages from a chapter URL or upload local panels directly.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Import Mode Switcher Tabs -->
+      <div class="import-tabs">
+        <button class="tab-btn active" id="tab-btn-url">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+          Chapter URL Scraper
+        </button>
+        <button class="tab-btn" id="tab-btn-upload">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="17 8 12 3 7 8"></polyline>
+            <line x1="12" y1="3" x2="12" y2="15"></line>
+          </svg>
+          Upload Local Images / ZIP
+          <span class="badge-offline">Offline</span>
+        </button>
+      </div>
+
+      <!-- Tab Content: URL Scraper -->
+      <div class="tab-panel active" id="panel-url">
+        <div class="url-input-container">
+          <div class="input-icon-wrapper">
+            <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+            </svg>
+            <input id="url" type="url" placeholder="https://asuracomic.net/series/.../chapter-..." autocomplete="off" spellcheck="false">
+          </div>
+          <button id="btn-extract" class="btn btn-primary">
+            <span>Extract Pages</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </div>
+
+        <div class="url-footer">
+          <label class="consent-label">
+            <input type="checkbox" id="consent" checked>
+            <span class="checkbox-custom"></span>
+            <span class="consent-text">I confirm I have authorization or fair rights to process content from this source.</span>
+          </label>
+          <div class="supported-tags">
+            <span class="tag">Asura Scans</span>
+            <span class="tag">Flame</span>
+            <span class="tag">Reaper</span>
+            <span class="tag">Generic Readers</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Content: Local Upload -->
+      <div class="tab-panel" id="panel-upload">
+        <div class="dropzone" id="dropzone">
+          <input type="file" id="file-input" multiple accept="image/png,image/jpeg,image/webp,application/zip,.zip" class="file-input-hidden">
+          <div class="dropzone-content">
+            <div class="drop-icon">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+            </div>
+            <h3>Drag &amp; drop images or chapter ZIP here</h3>
+            <p>Supports individual chapter panels (JPG, PNG, WEBP) or a whole chapter .ZIP archive</p>
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-browse">Browse Files</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Extract / Upload Progress Bar -->
+      <div class="progress-block hidden" id="extract-progress">
+        <div class="progress-info">
+          <span class="progress-title msg">Fetching chapter…</span>
+          <span class="progress-pct">0%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill fill"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 2: PREVIEW & SELECT STORYBOARD -->
+    <section class="card studio-card hidden" id="sec-gallery">
+      <div class="card-header">
+        <div class="card-title-group">
+          <div class="step-badge">2</div>
+          <div>
+            <h2>Curate Panels &amp; Storyboard <span class="counter-badge" id="sel-count">0 selected</span></h2>
+            <p class="card-desc">Click thumbnails to select panels, drag the timeline to set sequence, and inspect in vertical 9:16.</p>
+          </div>
+        </div>
+        <div class="gallery-actions">
+          <button class="btn btn-ghost btn-sm" id="btn-all">Select All</button>
+          <button class="btn btn-ghost btn-sm" id="btn-top10" title="Select first 10 panels for a quick 20s short">Top 10 (Shorts)</button>
+          <button class="btn btn-ghost btn-sm" id="btn-none">Clear</button>
+          <button class="btn btn-ghost btn-danger btn-sm" id="btn-remove">Remove Selected</button>
+        </div>
+      </div>
+
+      <!-- Main Gallery Grid -->
+      <div class="gallery-wrapper">
+        <div class="gallery" id="gallery"></div>
+      </div>
+
+      <!-- Storyboard & Preview Workspace -->
+      <div class="storyboard-workspace">
+        <div class="timeline-column">
+          <div class="column-header">
+            <div class="col-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect>
+                <line x1="7" y1="2" x2="7" y2="22"></line>
+                <line x1="17" y1="2" x2="17" y2="22"></line>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+              </svg>
+              <span>Selected Storyboard Timeline</span>
+              <span class="timeline-hint">(Scroll with mouse wheel or use arrows)</span>
+            </div>
+            <div class="timeline-nav-buttons">
+              <button type="button" id="sb-scroll-left" class="btn btn-ghost btn-sm" title="Scroll Left">◀</button>
+              <button type="button" id="sb-scroll-right" class="btn btn-ghost btn-sm" title="Scroll Right">▶</button>
+            </div>
+          </div>
+          <div class="storyboard-track-container">
+            <div class="storyboard" id="storyboard">
+              <div class="empty-state">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                  <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                  <polyline points="21 15 16 10 5 21"></polyline>
+                </svg>
+                <p>No panels selected. Click images above to build your sequence.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Frame Preview Mockup & Crop Controls -->
+        <div class="crop-column">
+          <div class="column-header">
+            <div class="col-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                <line x1="12" y1="18" x2="12.01" y2="18"></line>
+              </svg>
+              <span id="preview-title-ratio">Frame Preview</span>
+            </div>
+          </div>
+
+          <div class="phone-mockup-wrapper">
+            <div class="phone-frame" id="mockup-frame">
+              <div class="phone-notch"></div>
+              <div class="phone-screen">
+                <img id="big-preview" alt="Select a panel to preview">
+                <div class="preview-overlay-info">
+                  <span class="ratio-pill" id="preview-ratio-pill">9:16 VERTICAL</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Crop Configuration Controls -->
+          <div class="crop-settings-panel">
+            <div class="form-group">
+              <label>Target Format</label>
+              <div class="ratio-switch-group">
+                <button type="button" class="ratio-btn active" data-ratio="9:16" id="ratio-btn-916">
+                  <span class="ratio-icon">📱</span>
+                  <span>9:16 Vertical</span>
+                  <small>Shorts / Reels</small>
+                </button>
+                <button type="button" class="ratio-btn" data-ratio="16:9" id="ratio-btn-169">
+                  <span class="ratio-icon">🖥️</span>
+                  <span>16:9 Landscape</span>
+                  <small>YouTube Standard</small>
+                </button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="crop-mode">Crop Mode</label>
+              <div class="select-wrapper">
+                <select id="crop-mode"></select>
+              </div>
+              <p class="input-tip" id="crop-mode-tip"><b>Smart scene split:</b> Analyzes gutters and slices tall pages into sequential scenes.</p>
+            </div>
+
+            <div class="form-group">
+              <label for="crop-res">Canvas Resolution</label>
+              <div class="select-wrapper">
+                <select id="crop-res"></select>
+              </div>
+            </div>
+
+            <button id="btn-process" class="btn btn-primary btn-block">
+              <span id="btn-process-text">Process Frames to 9:16</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+
+            <div class="progress-block hidden" id="process-progress">
+              <div class="progress-info">
+                <span class="progress-title msg">Processing 9:16 frames…</span>
+                <span class="progress-pct">0%</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill fill"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 3: MOTION ENGINE & VIDEO SETTINGS -->
+    <section class="card studio-card hidden" id="sec-video">
+      <div class="card-header">
+        <div class="card-title-group">
+          <div class="step-badge">3</div>
+          <div>
+            <h2>Motion Engine &amp; Cinematic Transitions</h2>
+            <p class="card-desc">Fine-tune Ken Burns pan &amp; zoom, transition timings, and resolution before final render.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="render-workspace">
+        <!-- Frames Sequence Strip & Inspection -->
+        <div class="frames-sequence-panel">
+          <div class="sequence-header">
+            <h3>Final Frame Sequence <span class="counter-badge" id="frame-count-badge">0 frames</span></h3>
+            <div class="timeline-nav-buttons">
+              <button type="button" id="frames-scroll-left" class="btn btn-ghost btn-sm" title="Scroll Left">◀</button>
+              <button type="button" id="frames-scroll-right" class="btn btn-ghost btn-sm" title="Scroll Right">▶</button>
+            </div>
+          </div>
+
+          <div class="storyboard-track-container">
+            <div class="storyboard frames-storyboard" id="frames"></div>
+          </div>
+
+          <div class="scene-director-card" id="scene-director">
+            <div class="director-header">
+              <div class="director-title-box">
+                <span class="director-tag">SCENE DIRECTOR</span>
+                <h4 id="active-scene-title">Scene #1</h4>
+              </div>
+              <div class="director-actions">
+                <button type="button" class="btn btn-ghost btn-xs" id="btn-apply-all-mode" title="Apply this camera motion to all scenes in storyboard">
+                  ⚡ Apply Mode to All Scenes
+                </button>
+              </div>
+            </div>
+
+            <div class="director-body">
+              <!-- Live Cinema Player Viewport -->
+              <div class="cinema-monitor-wrapper">
+                <div class="cinema-monitor" id="cinema-monitor">
+                  <div class="monitor-screen" id="monitor-screen">
+                    <img id="frame-preview" alt="Scene preview" class="preview-img">
+                    <div class="motion-scan-line" id="motion-scan-line"></div>
+                    <div class="dialogue-focus-guide" id="dialogue-guide" title="Dialogue Bubble Reading Area">
+                      <span>💬 Dialogue &amp; Speech Bubble Reading Area</span>
+                    </div>
+                  </div>
+                  <div class="monitor-hud">
+                    <span class="monitor-mode-label" id="monitor-mode-label">🖼️ Pillarbox Blur (Default)</span>
+                    <button type="button" class="monitor-play-btn" id="btn-toggle-preview-motion" title="Toggle Live Motion Simulation">
+                      <span id="play-btn-icon">▶</span>
+                      <span id="play-btn-text">Simulate Motion</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Camera Motion & Dialogue Controls -->
+              <div class="director-controls">
+                <label class="control-label">Camera Motion Mode for This Scene</label>
+                <div class="mode-select-grid">
+                  <button type="button" class="mode-card-btn active" data-mode="blur_fill" id="mode-btn-blur">
+                    <div class="mode-card-icon">🖼️</div>
+                    <div class="mode-card-info">
+                      <div class="mode-card-title">Pillarbox Blur (Default)</div>
+                      <div class="mode-card-desc">Centered artwork + soft blurred wings. 100% full character face &amp; body shown without cutting.</div>
+                    </div>
+                  </button>
+
+                  <button type="button" class="mode-card-btn" data-mode="vpan" id="mode-btn-vpan">
+                    <div class="mode-card-icon">🎬</div>
+                    <div class="mode-card-info">
+                      <div class="mode-card-title">Vertical Pan (Face to Feet)</div>
+                      <div class="mode-card-desc">Cinematic glide: starts focused on character's face/head and moves smoothly down to feet.</div>
+                    </div>
+                  </button>
+
+                  <button type="button" class="mode-card-btn" data-mode="dialogue" id="mode-btn-dialogue">
+                    <div class="mode-card-icon">🔍</div>
+                    <div class="mode-card-info">
+                      <div class="mode-card-title">Dialogue &amp; Face Zoom</div>
+                      <div class="mode-card-desc">Magnifies speech bubbles &amp; facial expressions for crisp readability on YouTube screens.</div>
+                    </div>
+                  </button>
+                </div>
+
+                <div class="scene-info-bar">
+                  <div class="info-pill" id="scene-aspect-info">Panel: Portrait (1.6×)</div>
+                  <div class="info-pill" id="scene-motion-status">Motion: Safe &amp; Centered</div>
+                  <button type="button" class="btn btn-ghost btn-xs btn-danger" id="btn-delete-scene" title="Remove this scene from final video">
+                    🗑️ Remove Scene
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Motion & Camera Inspector -->
+        <div class="settings-inspector">
+          <!-- Live Video HUD Calculator -->
+          <div class="video-hud-card">
+            <div class="hud-item">
+              <span class="hud-label">Estimated Length</span>
+              <span class="hud-value" id="hud-duration">0.0s</span>
+            </div>
+            <div class="hud-divider"></div>
+            <div class="hud-item">
+              <span class="hud-label">Frame Count</span>
+              <span class="hud-value" id="hud-frames">0</span>
+            </div>
+            <div class="hud-divider"></div>
+            <div class="hud-item">
+              <span class="hud-label">Target Format</span>
+              <span class="hud-value" id="hud-format">1080p</span>
+            </div>
+          </div>
+          <div class="hud-status-badge" id="hud-badge">
+            <span>Ready for Shorts / TikTok</span>
+          </div>
+
+          <!-- Control Sliders -->
+          <div class="controls-card">
+            <div class="slider-control">
+              <div class="slider-header">
+                <label for="per-image">Pacing per Panel</label>
+                <span class="slider-val-badge" id="v-dur">2.0s</span>
+              </div>
+              <input type="range" id="per-image" min="0.5" max="10" step="0.1" value="2">
+              <span class="control-hint">Recommended: 1.5s - 2.5s for fast-paced reels</span>
+            </div>
+
+            <div class="slider-control">
+              <div class="slider-header">
+                <label for="zoom">Ken Burns Zoom Scale</label>
+                <span class="slider-val-badge" id="v-zoom">1.15×</span>
+              </div>
+              <input type="range" id="zoom" min="1" max="1.5" step="0.01" value="1.15">
+              <span class="control-hint">Subtle cinematic zoom (1.00 = static, 1.25 = dramatic)</span>
+            </div>
+
+            <div class="form-group">
+              <label for="zoom-mode">Camera Motion Path</label>
+              <div class="select-wrapper">
+                <select id="zoom-mode">
+                  <option value="alternate">Alternate (Zoom In ⇄ Zoom Out)</option>
+                  <option value="in">Continuous Push In</option>
+                  <option value="out">Continuous Pull Out</option>
+                  <option value="none">Fixed / No Motion</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="transition">Transition Style</label>
+              <div class="select-wrapper">
+                <select id="transition"></select>
+              </div>
+            </div>
+
+            <div class="slider-control">
+              <div class="slider-header">
+                <label for="trans-dur">Transition Overlap</label>
+                <span class="slider-val-badge" id="v-trans">0.6s</span>
+              </div>
+              <input type="range" id="trans-dur" min="0.1" max="2" step="0.1" value="0.6">
+            </div>
+
+            <div class="form-group">
+              <label for="resolution">Render Resolution</label>
+              <div class="select-wrapper">
+                <select id="resolution"></select>
+              </div>
+            </div>
+
+            <!-- Big Render CTA -->
+            <button id="btn-render" class="btn btn-primary btn-block btn-lg">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+              <span>Render 9:16 Video</span>
+            </button>
+
+            <div class="progress-block hidden" id="render-progress">
+              <div class="progress-info">
+                <span class="progress-title msg">Rendering video with FFmpeg…</span>
+                <span class="progress-pct">0%</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill fill"></div>
+              </div>
+            </div>
+
+            <div class="render-notice">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+              </svg>
+              <span>Video is rendered silent by design. Add your own trending audio track in TikTok, Reels, or CapCut.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 4: PREMIERE PLAYER & EXPORT -->
+    <section class="card studio-card hidden" id="sec-export">
+      <div class="card-header">
+        <div class="card-title-group">
+          <div class="step-badge">4</div>
+          <div>
+            <h2>Premiere Player &amp; Export</h2>
+            <p class="card-desc">Your video has rendered successfully! Preview playback and download project packages.</p>
+          </div>
+        </div>
+        <button class="btn btn-ghost btn-sm" id="btn-back">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          Adjust Motion Settings
+        </button>
+      </div>
+
+      <div class="export-theater" id="export-theater">
+        <!-- Player Column -->
+        <div class="player-column" id="player-column">
+          <div class="phone-frame cinema-phone" id="cinema-player-frame">
+            <div class="phone-notch"></div>
+            <div class="phone-screen video-screen">
+              <video id="video-preview" controls playsinline loop></video>
+            </div>
+          </div>
+        </div>
+
+        <!-- Export CTAs & Summary -->
+        <div class="export-details-column">
+          <div class="success-banner">
+            <div class="success-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+            </div>
+            <div>
+              <h3>Rendering Complete</h3>
+              <p>Ready for instant distribution to YouTube Shorts, Instagram Reels &amp; TikTok.</p>
+            </div>
+          </div>
+
+          <div class="export-actions-list">
+            <a class="btn btn-primary btn-block btn-lg" id="dl-video" href="#" download>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>Download MP4 Video</span>
+            </a>
+
+            <a class="btn btn-secondary btn-block" id="dl-zip" href="#" download>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="21 8 21 21 3 21 3 8"></polyline>
+                <rect x="1" y="3" width="22" height="5"></rect>
+                <line x1="10" y1="12" x2="14" y2="12"></line>
+              </svg>
+              <span>Download Project ZIP Archive</span>
+            </a>
+          </div>
+
+          <div class="archive-contents-card">
+            <h4>📦 What's inside the Project ZIP:</h4>
+            <ul>
+              <li><b>originals/</b> — Uncompressed raw manhwa panels</li>
+              <li><b>processed_9x16/</b> — Precise 9:16 vertical frame cuts</li>
+              <li><b>video_9x16.mp4</b> — Rendered silent video master</li>
+              <li><b>project.json</b> — Full metadata and playback timings</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Fullscreen Image Lightbox Modal -->
+  <div class="lightbox-modal hidden" id="lightbox">
+    <div class="lightbox-backdrop" id="lightbox-backdrop"></div>
+    <div class="lightbox-content">
+      <button class="lightbox-close" id="lightbox-close" title="Close (Esc)">×</button>
+      <img id="lightbox-img" src="" alt="Full view">
+    </div>
+  </div>
+
+  <!-- Toast Notification Center -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -418,7 +418,34 @@ def process_worker(jid, selection, crop_mode, resolution):
         set_status(jid, stage="error", message=str(e))
 
 
-# ---------------------------------------------------------------- video rendering
+# ---------------------------------------------------------------- video rendering & hardware acceleration
+_GPU_ENCODER = None
+
+
+def get_video_encoder():
+    """
+    Detects if NVIDIA NVENC hardware acceleration is genuinely available (e.g. in Colab T4 GPU).
+    Falls back to multi-threaded CPU ultrafast encoding using all available cores.
+    """
+    global _GPU_ENCODER
+    if _GPU_ENCODER is not None:
+        return _GPU_ENCODER
+
+    try:
+        cmd = ["ffmpeg", "-y", "-f", "lavfi", "-i", "nullsrc=s=64x64:d=0.1",
+               "-c:v", "h264_nvenc", "-f", "null", "-"]
+        res = subprocess.run(cmd, capture_output=True, timeout=3)
+        if res.returncode == 0:
+            _GPU_ENCODER = ("h264_nvenc", ["-c:v", "h264_nvenc", "-preset", "p4", "-cq", "20"])
+            return _GPU_ENCODER
+    except Exception:
+        pass
+
+    # High-speed multi-threaded CPU fallback: max core utilization & ultrafast preset
+    _GPU_ENCODER = ("libx264", ["-c:v", "libx264", "-preset", "ultrafast", "-crf", "20", "-threads", "0"])
+    return _GPU_ENCODER
+
+
 def clip_filter(i, W, H, per_image, fps, zoom, zoom_mode, mode="blur_fill"):
     frames = int(round(per_image * fps))
     if mode == "vpan":
@@ -446,9 +473,12 @@ def clip_filter(i, W, H, per_image, fps, zoom, zoom_mode, mode="blur_fill"):
             z = f"1+({zoom}-1)*on/{frames - 1}"
         else:
             z = f"{zoom}-({zoom}-1)*on/{frames - 1}"
+        # Optimized scale: 1.25x provides crisp subpixel anti-aliasing without 4K overhead
+        scale_w = int(W * 1.25) // 2 * 2
+        scale_h = int(H * 1.25) // 2 * 2
         return (
-            f"[{i}:v]scale={W * 2}:{H * 2}:force_original_aspect_ratio=increase,"
-            f"crop={W * 2}:{H * 2},"
+            f"[{i}:v]scale={scale_w}:{scale_h}:force_original_aspect_ratio=increase,"
+            f"crop={scale_w}:{scale_h},"
             f"zoompan=z='{z}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':"
             f"d={frames}:s={W}x{H}:fps={fps},setsar=1,format=yuv420p[v{i}]"
         )
@@ -457,7 +487,7 @@ def clip_filter(i, W, H, per_image, fps, zoom, zoom_mode, mode="blur_fill"):
 def build_chunk(items, out_path, W, H, per_image, fps, zoom, zoom_mode,
                 trans_list, start_idx):
     n = len(items)
-    args = ["ffmpeg", "-y"]
+    args = ["ffmpeg", "-y", "-threads", "0"]
     # NOTE: feed each image as a SINGLE frame (no -loop). zoompan's d=
     # expands that one frame to exactly per_image seconds.
     for f, m in items:
@@ -471,9 +501,9 @@ def build_chunk(items, out_path, W, H, per_image, fps, zoom, zoom_mode,
         fc.append(f"[{last}][v{i}]xfade=transition={t}:duration={TD[0]:.3f}"
                   f":offset={offset:.3f}[x{i}]")
         last, dur = f"x{i}", dur + per_image - TD[0]
-    args += ["-filter_complex", ";".join(fc), "-map", f"[{last}]",
-             "-c:v", "libx264", "-preset", "veryfast", "-crf", "20",
-             "-an", out_path]
+    
+    _, enc_flags = get_video_encoder()
+    args += ["-filter_complex", ";".join(fc), "-map", f"[{last}]"] + enc_flags + ["-an", out_path]
     subprocess.run(args, check=True, capture_output=True)
     return dur
 
@@ -507,7 +537,7 @@ def render_video(items, out_path, W, H, per_image, fps, zoom, zoom_mode,
             if progress_cb:
                 progress_cb(int(90 * (k + 1) / len(chunks)))
         trim = per_image - trans_dur
-        args = ["ffmpeg", "-y"]
+        args = ["ffmpeg", "-y", "-threads", "0"]
         for cp in cpaths:
             args += ["-i", cp]
         fc = []
@@ -519,9 +549,11 @@ def render_video(items, out_path, W, H, per_image, fps, zoom, zoom_mode,
                           f"setpts=PTS-STARTPTS,format=yuv420p[j{k}]")
         ins = "".join(f"[j{k}]" for k in range(len(cpaths)))
         fc.append(f"{ins}concat=n={len(cpaths)}:v=1:a=0[out]")
-        args += ["-filter_complex", ";".join(fc), "-map", "[out]",
-                 "-c:v", "libx264", "-preset", "veryfast", "-crf", "20",
-                 "-movflags", "+faststart", "-an", out_path]
+        
+        _, enc_flags = get_video_encoder()
+        args += ["-filter_complex", ";".join(fc), "-map", "[out]"] + enc_flags + [
+            "-movflags", "+faststart", "-an", out_path
+        ]
         subprocess.run(args, check=True, capture_output=True)
     finally:
         shutil.rmtree(tmpdir, ignore_errors=True)
